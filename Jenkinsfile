@@ -13,28 +13,24 @@ pipeline{
         string(name: 'DockerHubUser', description: "name of the Application", defaultValue: 'praveensingam1994')
     }
 
-    stages{
-         
-        stage('Git Checkout'){
-                    when { expression {  params.action == 'create' } }
-            steps{
-            gitCheckout(
-                branch: "main",
-                url: "https://github.com/praveen1994dec/Java_app_3.0.git"
-            )
+     stages {
+        stage('Parallel Execution') {
+            when {
+                expression { params.action == 'create' }
+            }
+            steps {
+                parallel(
+                    "Git Checkout": {
+                        git branch: "main", url: "https://github.com/praveen1994dec/Java_app_3.0.git"
+                    },
+                    "Unit Test Maven": {
+                        mvnTest()
+                    }
+                )
             }
         }
-         stage('Unit Test maven'){
-         
-         when { expression {  params.action == 'create' } }
-
-            steps{
-               script{
-                   
-                   mvnTest()
-               }
-            }
-        }
+    }
+}
          stage('Integration Test maven'){
          when { expression {  params.action == 'create' } }
             steps{
