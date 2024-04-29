@@ -21,7 +21,7 @@ pipeline{
             steps {
                 parallel(
                     "Git Checkout": {
-                        git branch: "main", url: "https://github.com/praveen1994dec/Java_app_3.0.git"
+                        git branch: "main", url: "https://github.com/shubham5992/Java_app_3.0.git"
                     },
                     "Unit Test Maven": {
                         mvnTest()
